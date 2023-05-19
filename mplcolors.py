@@ -1,13 +1,24 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[5]:
+
+
+import numpy as np
+import pandas as pd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+    
+
+
+# In[15]:
 
 
 class multicolor_plotter():
     '''df = dataframe with your information, x_df_pos = column position of your x variables, x_label = x axis label, 
     y_df_pos = column position of your y variables, y_label = y axis label, label_df_pos = the label you want associated with each data point, 
-    title = title of chart, chunk = iteration thru the DF'''
+    title = title of chart, chunk = corresponds to how many of the same variable you have & want plotted'''
     
     #imports
     import numpy as np
@@ -27,6 +38,12 @@ class multicolor_plotter():
         self.chunk = chunk
         
     def plotter(self):
+        
+        def delist(args):
+            'Taking mutliple lists within a list and returning a single list of values'
+            delist = [var for small_list in args for var in small_list]
+            return(delist)
+        
         assay_num = [var for var in range(len(self.df.iloc[:,self.x_df_pos]))]
         
         offset_x = 0
@@ -45,7 +62,7 @@ class multicolor_plotter():
             offset_x += self.chunk
         
         while offset_y < len(assay_num):
-            i_y = assay_num[offset_y:offset_y+chunk]
+            i_y = assay_num[offset_y:offset_y+self.chunk]
             y = self.df.iloc[i_y, self.y_df_pos]
             yf.append(y)
             
@@ -79,4 +96,23 @@ class multicolor_plotter():
             plt.legend(bbox_to_anchor =(1.1, 1.05))
             
  
+
+
+# In[28]:
+
+
+#example of use
+df_dict = {'Name':['a','a','a','a','b','b','b','b','c','c','c','c','d','d','d','d','e','e','e','e','f','f','f','f'], 
+                   'X': [var for var in range(24)],
+                   'Y': [var for var in range(24)]}
+df = pd.DataFrame(df_dict)
+display(df)
+test = multicolor_plotter(df,1,'x',2,'y',0,'Testing',4)
+test.plotter()
+
+
+# In[ ]:
+
+
+
 
